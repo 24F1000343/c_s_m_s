@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold text-success mb-4">Add Review for Meeting</h2>
+
+<div class="card shadow p-4 mx-auto" style="max-width:700px;">
+
+    <p><b>Staff:</b> {{ meeting.staff.name }}</p>
+    <p><b>Date:</b> {{ meeting.date }}</p>
+    <p><b>Time:</b> {{ meeting.time }}</p>
+    <p><b>Agenda:</b> {{ meeting.agenda }}</p>
+
+    <hr>
+
+    <form method="POST">
+
+        <label class="fw-semibold">Summary of Discussion</label>
+        <textarea name="summary" class="form-control mb-3" required></textarea>
+
+        <label class="fw-semibold">Improvements Needed</label>
+        <textarea name="improvements" class="form-control mb-3" required></textarea>
+
+        <label class="fw-semibold">Suggestions</label>
+        <textarea name="suggestions" class="form-control mb-3" required></textarea>
+
+        <button class="btn btn-success w-100">Submit Review</button>
+
+    </form>
+
+</div>
+
+{% endblock %}

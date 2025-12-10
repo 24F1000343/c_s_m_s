@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold text-danger mb-4">Blacklisted Users</h2>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-danger">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for b in bl %}
+        <tr>
+            <td>{{ b.id }}</td>
+            <td>{{ b.name }}</td>
+            <td>{{ b.role }}</td>
+            <td>{{ b.reason or "-" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

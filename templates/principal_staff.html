@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold text-primary mb-4">Manage Staff</h2>
+
+<a href="/principal/staff/add" class="btn btn-success mb-3">+ Add New Staff</a>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-success">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Blacklist</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for s in staff %}
+        <tr>
+            <td>{{ s.id }}</td>
+            <td>{{ s.name }}</td>
+            <td>{{ s.email }}</td>
+            <td>{{ s.phone }}</td>
+            <td>
+                <a href="/principal/staff/blacklist/{{ s.id }}" 
+                   class="btn btn-danger btn-sm">Blacklist</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

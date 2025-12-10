@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="fw-bold text-primary mb-3">Schedule Meeting</h3>
+
+<div class="card shadow p-4">
+
+    <form method="POST">
+
+        <div class="mb-3">
+            <label class="fw-semibold">Select Staff</label>
+            <select name="staff_id" class="form-control" required>
+                <option value="">-- Choose --</option>
+                {% for s in staff %}
+                <option value="{{ s.id }}">{{ s.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="fw-semibold">Select HOD</label>
+            <select name="hod_id" class="form-control" required>
+                <option value="">-- Choose --</option>
+                {% for h in hods %}
+                <option value="{{ h.id }}">{{ h.name }} ({{ h.department.name }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Date</label>
+            <input type="date" required class="form-control" name="date">
+        </div>
+
+        <div class="mb-3">
+            <label>Time</label>
+            <input type="time" required class="form-control" name="time">
+        </div>
+
+        <div class="mb-3">
+            <label>Agenda</label>
+            <textarea class="form-control" name="agenda" rows="3"></textarea>
+        </div>
+
+        <button class="btn btn-primary w-100">Schedule Meeting</button>
+
+    </form>
+
+</div>
+
+{% endblock %}

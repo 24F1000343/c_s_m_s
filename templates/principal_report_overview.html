@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold text-primary mb-4">College Reporting Overview</h2>
+
+<div class="row g-4">
+
+    <div class="col-md-4">
+        <div class="card shadow p-4 text-center dashboard-card">
+            <h5 class="fw-semibold">Total HODs</h5>
+            <h2 class="text-primary fw-bold">{{ total_hods }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow p-4 text-center dashboard-card">
+            <h5 class="fw-semibold">Total Staff</h5>
+            <h2 class="text-success fw-bold">{{ total_staff }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow p-4 text-center dashboard-card">
+            <h5 class="fw-semibold">Total Meetings</h5>
+            <h2 class="text-info fw-bold">{{ total_meetings }}</h2>
+        </div>
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<h4 class="fw-bold mb-3">Department-wise HOD Summary</h4>
+
+<table class="table table-bordered shadow table-hover">
+    <thead class="table-primary">
+        <tr>
+            <th>Department</th>
+            <th>HOD Name</th>
+            <th>Total Meetings</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for d in department_data %}
+        <tr>
+            <td>{{ d.department }}</td>
+            <td>{{ d.hod }}</td>
+            <td>{{ d.meeting_count }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

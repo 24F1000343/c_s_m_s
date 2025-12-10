@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold text-success mb-4">Meeting History</h2>
+
+<table class="table table-bordered table-hover shadow">
+    <thead class="table-success">
+        <tr>
+            <th>Staff</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Agenda</th>
+            <th>Status</th>
+            <th>Review</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for m in meetings %}
+        <tr>
+            <td>{{ m.staff.name }}</td>
+            <td>{{ m.date }}</td>
+            <td>{{ m.time }}</td>
+            <td>{{ m.agenda }}</td>
+            <td>{{ m.status }}</td>
+            <td>
+                {% if m.review %}
+                <button class="btn btn-sm btn-dark" data-bs-toggle="collapse" data-bs-target="#rev{{ m.id }}">
+                    View
+                </button>
+
+                <div id="rev{{ m.id }}" class="collapse mt-2">
+                    <div class="alert alert-light shadow">
+                        <b>Summary:</b> {{ m.review.summary }}<br>
+                        <b>Improvements:</b> {{ m.review.improvements }}<br>
+                        <b>Suggestions:</b> {{ m.review.suggestions }}
+                    </div>
+                </div>
+                {% else %}
+                <span class="text-muted">—</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

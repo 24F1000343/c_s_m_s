@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold mb-4 text-success">HOD Dashboard</h2>
+
+<div class="row g-4">
+
+    <div class="col-md-4">
+        <div class="card shadow-lg p-4 text-center dashboard-card">
+            <h5 class="fw-bold">Today's Meetings</h5>
+            <h2 class="text-success fw-bold">{{ today_meetings }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-lg p-4 text-center dashboard-card">
+            <h5 class="fw-bold">Upcoming</h5>
+            <h2 class="text-primary fw-bold">{{ upcoming_meetings }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-lg p-4 text-center dashboard-card">
+            <h5 class="fw-bold">Completed</h5>
+            <h2 class="text-info fw-bold">{{ completed_meetings }}</h2>
+        </div>
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold">Upcoming Meetings</h4>
+    <a href="{{ url_for('add_availability') }}" class="btn btn-success">Add Availability</a>
+</div>
+
+<table class="table table-bordered table-hover shadow">
+    <thead class="table-success">
+        <tr>
+            <th>Staff</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Agenda</th>
+            <th>Status</th>
+            <th>Review</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for m in meetings %}
+        <tr>
+            <td>{{ m.staff.name }}</td>
+            <td>{{ m.date }}</td>
+            <td>{{ m.time }}</td>
+            <td>{{ m.agenda }}</td>
+            <td>{{ m.status }}</td>
+            <td>
+                {% if m.status != "Completed" %}
+                <a href="{{ url_for('review_meeting', id=m.id) }}" class="btn btn-sm btn-dark">Add Review</a>
+                {% else %}
+                <span class="badge bg-info">Done</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

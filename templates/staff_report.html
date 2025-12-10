@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold text-info mb-4">Staff Performance Report</h2>
+
+<p><b>Name:</b> {{ staff.name }}</p>
+<p><b>Total Meetings:</b> {{ meeting_count }}</p>
+
+<hr>
+
+<h4 class="fw-bold">Completed Meetings</h4>
+
+<table class="table table-bordered table-hover shadow mt-3">
+    <thead class="table-info">
+        <tr>
+            <th>HOD</th>
+            <th>Date</th>
+            <th>Summary</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for m in completed %}
+        <tr>
+            <td>{{ m.hod.name }}</td>
+            <td>{{ m.date }}</td>
+            <td>{{ m.review.summary if m.review else '—' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

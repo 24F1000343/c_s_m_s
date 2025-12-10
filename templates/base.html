@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSMS - College Staff Management System</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background: #f4f6fa;
+            position: relative;
+        }
+
+        /* Watermark Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 600px;
+            height: 600px;
+            background: url('/static/svit_logo.png') no-repeat center;
+            background-size: contain;
+            opacity: 0.10;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        /* Navbar */
+        .custom-navbar {
+            background: linear-gradient(90deg, #007bff, #0056d6);
+            padding: 12px 30px;
+        }
+
+        .custom-navbar .nav-link {
+            color: white !important;
+            font-weight: 500;
+            margin-right: 20px;
+        }
+
+        .navbar-brand img {
+            height: 45px;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-card {
+            border-radius: 15px;
+            background: white;
+            transition: 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0px 6px 15px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <a class="navbar-brand text-white fw-bold d-flex align-items-center" href="/">
+            <img src="/static/svit_logo.png" alt="Logo" class="me-2">
+            CSMS
+        </a>
+
+        <div class="ms-auto d-flex">
+
+            <!-- Show Principal Links -->
+            {% if session.get("role") == "principal" %}
+                <a href="/dashboard/principal" class="nav-link">Dashboard</a>
+                <a href="/principal/blacklist" class="nav-link text-warning fw-bold">Blacklist</a>
+            {% endif %}
+
+            <!-- Show HOD Links -->
+            {% if session.get("role") == "hod" %}
+                <a href="/dashboard/hod" class="nav-link">Dashboard</a>
+            {% endif %}
+
+            <!-- Show Staff Links -->
+            {% if session.get("role") == "staff" %}
+                <a href="/dashboard/staff" class="nav-link">Dashboard</a>
+            {% endif %}
+
+            <!-- Logout -->
+            {% if session.get("role") %}
+                <a href="/logout" class="nav-link text-light">Logout</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

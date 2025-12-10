@@ -1,0 +1,149 @@
+/* --------------------------
+   GLOBAL PAGE STYLING
+--------------------------- */
+
+body {
+    background-color: #f7f9fc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* --------------------------
+   WATERMARK BACKGROUND
+--------------------------- */
+
+.watermark {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../static/svit_logo.png");
+    background-size: 45%;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.07;   /* 7% opacity (Option A chosen) */
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* --------------------------
+   NAVBAR STYLING
+--------------------------- */
+
+.navbar {
+    padding: 12px 20px !important;
+    background: linear-gradient(90deg, #0052cc, #007bff);
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.navbar a.nav-link {
+    font-weight: 500;
+    color: #ffffff !important;
+    margin-left: 10px;
+}
+
+.navbar a.nav-link:hover {
+    opacity: 0.7;
+}
+
+/* --------------------------
+   DASHBOARD CARDS
+--------------------------- */
+
+.dashboard-card {
+    border-radius: 15px;
+    transition: all 0.3s ease-in-out;
+    background: #ffffff;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.15);
+}
+
+/* --------------------------
+   TABLE STYLING
+--------------------------- */
+
+table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table th {
+    font-weight: bold;
+}
+
+table tr:hover {
+    background-color: #eef4ff !important;
+}
+
+/* --------------------------
+   BUTTON ENHANCEMENTS
+--------------------------- */
+
+.btn {
+    border-radius: 8px !important;
+    padding: 10px 16px;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background-color: #0052cc !important;
+}
+
+.btn-success {
+    background-color: #2d9d2d !important;
+}
+
+.btn-info {
+    background-color: #008cba !important;
+}
+
+/* --------------------------
+   FORM STYLING
+--------------------------- */
+
+form .form-control {
+    border-radius: 8px;
+    padding: 10px;
+}
+
+form label {
+    font-weight: 600;
+}
+
+/* --------------------------
+   CARD + SHADOW UTILITIES
+--------------------------- */
+
+.card {
+    border-radius: 14px !important;
+    border: none !important;
+}
+
+/* --------------------------
+   LOGIN / REGISTER PAGE CENTERING
+--------------------------- */
+
+.center-box {
+    max-width: 450px;
+    margin: auto;
+}
+
+/* --------------------------
+   COLLAPSE REVIEW BOXES
+--------------------------- */
+
+.alert-light {
+    border-radius: 10px;
+    border-left: 4px solid #007bff;
+}
+

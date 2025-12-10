@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold text-primary mb-4">Edit HOD</h2>
+
+<div class="card shadow p-4 mx-auto" style="max-width:550px">
+    <form method="POST">
+
+        <label>Name</label>
+        <input name="name" value="{{ hod.name }}" required class="form-control mb-3">
+
+        <label>Email</label>
+        <input name="email" value="{{ hod.email }}" type="email" required class="form-control mb-3">
+
+        <label>Phone</label>
+        <input name="phone" value="{{ hod.phone }}" class="form-control mb-3">
+
+        <label>Bio</label>
+        <textarea name="bio" class="form-control mb-3">{{ hod.bio }}</textarea>
+
+        <label>Department</label>
+        <select name="department_id" class="form-control mb-3">
+            {% for d in departments %}
+            <option value="{{ d.id }}" {% if hod.department_id == d.id %} selected {% endif %}>{{ d.name }}</option>
+            {% endfor %}
+        </select>
+
+        <button class="btn btn-primary w-100">Update HOD</button>
+
+    </form>
+</div>
+
+{% endblock %}

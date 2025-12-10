@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold text-success mb-4">Edit Staff</h2>
+
+<div class="card shadow p-4 mx-auto" style="max-width:550px">
+    <form method="POST">
+
+        <input name="name" value="{{ staff.name }}" required class="form-control mb-3">
+
+        <select name="gender" class="form-control mb-3">
+            <option {% if staff.gender == 'Male' %} selected {% endif %}>Male</option>
+            <option {% if staff.gender == 'Female' %} selected {% endif %}>Female</option>
+            <option {% if staff.gender == 'Other' %} selected {% endif %}>Other</option>
+        </select>
+
+        <input name="phone" value="{{ staff.phone }}" class="form-control mb-3">
+
+        <textarea name="address" class="form-control mb-3">{{ staff.address }}</textarea>
+
+        <button class="btn btn-success w-100">Update Staff</button>
+
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold text-primary mb-4">Add New Staff</h2>
+
+<form method="POST" class="card p-4 shadow-sm" style="max-width: 600px;">
+    <label>Name</label>
+    <input name="name" class="form-control mb-2" required>
+
+    <label>Email</label>
+    <input name="email" class="form-control mb-2" required>
+
+    <label>Phone</label>
+    <input name="phone" class="form-control mb-2">
+
+    <label>Password</label>
+    <input name="password" class="form-control mb-3" required>
+
+    <button class="btn btn-success">Add Staff</button>
+</form>
+
+{% endblock %}

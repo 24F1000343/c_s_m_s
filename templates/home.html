@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+
+    <h1 class="text-center fw-bold mb-4 text-primary">Welcome to CSMS</h1>
+    <p class="text-center text-muted mb-5">
+        College Staff Meeting Scheduler — Login or Register to Continue
+    </p>
+
+    <div class="d-flex justify-content-center flex-wrap">
+
+        <!-- Principal Login -->
+        <a href="{{ url_for('login_principal') }}"
+           class="btn btn-primary m-2 px-5 py-2">
+            Principal Login
+        </a>
+
+        <!-- HOD Login -->
+        <a href="{{ url_for('login_hod') }}"
+           class="btn btn-secondary m-2 px-5 py-2">
+            HOD Login
+        </a>
+
+        <!-- Staff Login -->
+        <a href="{{ url_for('login_staff') }}"
+           class="btn btn-info m-2 px-5 py-2 text-white">
+            Staff Login
+        </a>
+
+        <hr class="w-100 my-4">
+
+        <!-- Register HOD -->
+        <a href="{{ url_for('register_hod_public') }}"
+           class="btn btn-outline-success m-2 px-5 py-2">
+            Register as HOD
+        </a>
+
+        <!-- Register Staff -->
+        <a href="{{ url_for('register_staff_public') }}"
+           class="btn btn-outline-primary m-2 px-5 py-2">
+            Register as Staff
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

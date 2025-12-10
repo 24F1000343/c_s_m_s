@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold mb-4 text-info">Staff Dashboard</h2>
+
+<div class="row g-4">
+
+    <div class="col-md-4">
+        <div class="card shadow-lg p-4 text-center dashboard-card">
+            <h5 class="fw-bold">Total Meetings</h5>
+            <h2 class="text-info fw-bold">{{ total }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-lg p-4 text-center dashboard-card">
+            <h5 class="fw-bold">Upcoming</h5>
+            <h2 class="text-success fw-bold">{{ upcoming }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-lg p-4 text-center dashboard-card">
+            <h5 class="fw-bold">Completed</h5>
+            <h2 class="text-primary fw-bold">{{ completed }}</h2>
+        </div>
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold">Your Meetings</h4>
+    <a href="{{ url_for('request_meeting') }}" class="btn btn-info text-white">Request Meeting</a>
+</div>
+
+<table class="table table-bordered table-hover shadow">
+    <thead class="table-info">
+        <tr>
+            <th>HOD</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Agenda</th>
+            <th>Status</th>
+            <th>Review</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for m in meetings %}
+        <tr>
+            <td>{{ m.hod.name }}</td>
+            <td>{{ m.date }}</td>
+            <td>{{ m.time }}</td>
+            <td>{{ m.agenda }}</td>
+            <td>
+                <span class="badge bg-secondary">{{ m.status }}</span>
+            </td>
+            <td>
+                {% if m.review %}
+                <button class="btn btn-sm btn-dark" data-bs-toggle="collapse" data-bs-target="#rev{{ m.id }}">
+                    View
+                </button>
+                <div class="collapse mt-2" id="rev{{ m.id }}">
+                    <div class="alert alert-light shadow">
+                        <b>Summary:</b> {{ m.review.summary }}<br>
+                        <b>Improvements:</b> {{ m.review.improvements }}<br>
+                        <b>Suggestions:</b> {{ m.review.suggestions }}
+                    </div>
+                </div>
+                {% else %}
+                <span class="text-muted">—</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

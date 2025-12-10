@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold text-info mb-4">Request a Meeting</h2>
+
+<div class="card shadow p-4 mx-auto" style="max-width:600px;">
+
+    <form method="POST">
+
+        <label class="fw-semibold">Select HOD</label>
+        <select name="hod_id" class="form-control mb-3" required>
+            <option value="">Choose HOD</option>
+            {% for h in hods %}
+            <option value="{{ h.id }}">{{ h.name }} ({{ h.department.name }})</option>
+            {% endfor %}
+        </select>
+
+        <label class="fw-semibold">Date</label>
+        <input type="date" required name="date" class="form-control mb-3">
+
+        <label class="fw-semibold">Time</label>
+        <input type="time" required name="time" class="form-control mb-3">
+
+        <label class="fw-semibold">Agenda</label>
+        <textarea name="agenda" class="form-control mb-3" placeholder="Write the agenda of meeting…"></textarea>
+
+        <button class="btn btn-info text-white w-100">Submit Request</button>
+
+    </form>
+
+</div>
+
+{% endblock %}

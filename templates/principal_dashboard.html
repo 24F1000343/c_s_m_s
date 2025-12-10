@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="fw-bold mb-4 text-primary text-center">
+        <i class="bi bi-speedometer2"></i> Principal Dashboard
+    </h2>
+
+    <div class="row g-4 justify-content-center">
+
+        <!-- Total HODs -->
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0 text-center p-4">
+                <h6 class="text-muted">Total HODs</h6>
+                <h2 class="fw-bold text-primary">{{ hod_count }}</h2>
+                <a href="/principal/hods" class="btn btn-outline-primary w-100 mt-3">
+                    Manage HODs
+                </a>
+            </div>
+        </div>
+
+        <!-- Total Staff -->
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0 text-center p-4">
+                <h6 class="text-muted">Total Staff</h6>
+                <h2 class="fw-bold text-success">{{ staff_count }}</h2>
+                <a href="/principal/staff" class="btn btn-outline-success w-100 mt-3">
+                    Manage Staff
+                </a>
+            </div>
+        </div>
+
+        <!-- Total Meetings -->
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0 text-center p-4">
+                <h6 class="text-muted">Total Meetings</h6>
+                <h2 class="fw-bold text-info">{{ meeting_count }}</h2>
+            </div>
+        </div>
+
+        <!-- Blacklisted Users -->
+        <div class="col-md-3">
+            <div class="card shadow-lg border-danger text-center p-4">
+                <h6 class="text-danger">Blacklisted Users</h6>
+                <h2 class="fw-bold text-danger">{{ blacklist_count }}</h2>
+                <a href="/principal/blacklist" class="btn btn-outline-danger w-100 mt-3">
+                    View Blacklist
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="my-5">
+
+    <h4 class="fw-bold mb-3">Recent Meetings</h4>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover shadow-sm">
+            <thead class="table-primary text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>Staff</th>
+                    <th>HOD</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody class="text-center">
+                {% for m in meetings %}
+                <tr>
+                    <td>{{ m.id }}</td>
+                    <td>{{ m.staff.name }}</td>
+                    <td>{{ m.hod.name }}</td>
+                    <td>{{ m.date.strftime("%d-%m-%Y") }}</td>
+
+                    <td>
+                        {% if m.status == "Requested" %}
+                            <span class="badge bg-warning text-dark">Requested</span>
+                        {% elif m.status == "Approved" %}
+                            <span class="badge bg-primary">Approved</span>
+                        {% elif m.status == "Completed" %}
+                            <span class="badge bg-success">Completed</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ m.status }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

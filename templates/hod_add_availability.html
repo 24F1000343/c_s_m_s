@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold text-success mb-4">Add Availability</h2>
+
+<div class="card shadow p-4 mx-auto" style="max-width:550px;">
+    <form method="POST">
+
+        <label>Date</label>
+        <input type="date" name="date" required class="form-control mb-3">
+
+        <label>Start Time</label>
+        <input type="time" name="start_time" required class="form-control mb-3">
+
+        <label>End Time</label>
+        <input type="time" name="end_time" required class="form-control mb-3">
+
+        <button class="btn btn-success w-100">Add Availability</button>
+
+    </form>
+</div>
+
+{% endblock %}

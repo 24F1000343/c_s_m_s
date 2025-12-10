@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="fw-bold mb-3">Meeting History for {{ staff.name }}</h3>
+
+<table class="table table-hover table-bordered">
+
+    <thead class="table-secondary">
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>HOD</th>
+            <th>Status</th>
+            <th>Review</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for m in history %}
+        <tr>
+            <td>{{ m.date }}</td>
+            <td>{{ m.time }}</td>
+            <td>{{ m.hod.name }}</td>
+            <td>{{ m.status }}</td>
+            <td>
+                {% if m.review %}
+                    <button class="btn btn-sm btn-dark"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#rev{{ m.id }}">
+                        View
+                    </button>
+
+                    <div id="rev{{ m.id }}" class="collapse mt-2">
+                        <div class="alert alert-light">
+                            <b>Summary:</b> {{ m.review.summary }}<br>
+                            <b>Improvements:</b> {{ m.review.improvements }}<br>
+                            <b>Suggestions:</b> {{ m.review.suggestions }}
+                        </div>
+                    </div>
+                {% else %}
+                    —
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}
