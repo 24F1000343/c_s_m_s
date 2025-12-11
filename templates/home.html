@@ -3,9 +3,9 @@
 
 <div class="container mt-5">
 
-    <h1 class="text-center fw-bold mb-4 text-primary">Welcome to CSMS</h1>
-    <p class="text-center text-muted mb-5">
-        College Staff Meeting Scheduler — Login or Register to Continue
+    <h1 class="text-center fw-bold mb-4 text-primary">Welcome to SMVIT Meeting Portal</h1>
+    <p class="text-center text-muted mb-4">
+        Schedule & Manage Meetings — Login or Register to Continue
     </p>
 
     <div class="d-flex justify-content-center flex-wrap">
@@ -29,6 +29,16 @@
         </a>
 
         <hr class="w-100 my-4">
+
+        <!-- NEW: Can't login? Register here -->
+        <div class="w-100 text-center mb-3">
+            <small class="text-muted">
+                Can't login?
+                <span class="text-primary fw-bold">
+                    Register here
+                </span>
+            </small>
+        </div>
 
         <!-- Register HOD -->
         <a href="{{ url_for('register_hod_public') }}"

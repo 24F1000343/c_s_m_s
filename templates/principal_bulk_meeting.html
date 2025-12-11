@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold mb-4 text-primary text-center">Schedule Meetings (Principal)</h2>
+
+<div class="card shadow p-4" style="max-width:800px; margin:auto;">
+
+    <form method="POST">
+
+        <!-- MODE SELECTION -->
+        <div class="mb-3">
+            <label class="fw-bold">Select Mode</label>
+            <select name="mode" class="form-control" required>
+                <option value="" disabled selected>-- Choose Option --</option>
+                <option value="all_staff">All Staff</option>
+                <option value="all_hod">All HODs</option>
+                <option value="all_both">All Staff + All HODs</option>
+                <option value="selected">Selected Staff / HODs</option>
+            </select>
+            <small class="text-muted">
+                For "Selected", choose names from the lists below.
+            </small>
+        </div>
+
+        <!-- DATE & TIME -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold">Meeting Date</label>
+                <input type="date" name="date" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold">Meeting Time</label>
+                <input type="time" name="time" class="form-control" required>
+            </div>
+        </div>
+
+        <!-- AGENDA -->
+        <div class="mb-3">
+            <label class="fw-bold">Agenda / Subject</label>
+            <textarea name="agenda" class="form-control" rows="3" required></textarea>
+        </div>
+
+        <!-- MULTI SELECT FOR SELECTED MODE -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold">Select Staff (optional)</label>
+                <select name="staff_ids" class="form-control" multiple size="6">
+                    {% for s in staff_list %}
+                        <option value="{{ s.id }}">{{ s.name }} ({{ s.email }})</option>
+                    {% endfor %}
+                </select>
+                <small class="text-muted">Use Ctrl (or Cmd) to select multiple.</small>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold">Select HODs (optional)</label>
+                <select name="hod_ids" class="form-control" multiple size="6">
+                    {% for h in hod_list %}
+                        <option value="{{ h.id }}">{{ h.name }} ({{ h.department.name if h.department else 'No Dept' }})</option>
+                    {% endfor %}
+                </select>
+                <small class="text-muted">You can leave either side empty.</small>
+            </div>
+        </div>
+
+        <button class="btn btn-primary w-100 mt-3">
+            Schedule Meetings
+        </button>
+    </form>
+</div>
+
+{% endblock %}

@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from datetime import datetime, date
 from models import (
     db, Principal, HOD, Staff, Department,
-    HODAvailability, Meeting, Review, Blocklist, Blacklist
+    HODAvailability, Meeting, Review, Blocklist
 )
 
 app = Flask(__name__)
@@ -134,7 +134,6 @@ def login_staff():
 # ----------------------------------------------------
 @app.route("/register/hod", methods=["GET", "POST"])
 def register_hod_public():
-    # If already logged in, no need to register
     if session.get("role"):
         return redirect("/")
 
@@ -241,31 +240,6 @@ def principal_add_hod():
     return render_template("principal_add_hod.html", departments=Department.query.all())
 
 
-# ---------- HOD BLACKLIST ----------
-@app.route("/principal/hods/blacklist/<int:hod_id>")
-def principal_blacklist_hod(hod_id):
-    if session.get("role") != "principal":
-        return redirect("/login/principal")
-
-    hod = HOD.query.get_or_404(hod_id)
-
-    # If already blacklisted, just show message
-    if Blocklist.query.filter_by(role="hod", ref_id=hod.id).first():
-        flash("HOD is already blacklisted.", "warning")
-        return redirect("/principal/hods")
-
-    bl = Blocklist(
-        role="hod",
-        ref_id=hod.id,
-        reason="Misconduct"
-    )
-    db.session.add(bl)
-    db.session.commit()
-
-    flash(f"HOD '{hod.name}' blacklisted!", "danger")
-    return redirect("/principal/hods")
-
-
 # ----------------------------------------------------
 # PRINCIPAL — MANAGE STAFF
 # ----------------------------------------------------
@@ -273,6 +247,7 @@ def principal_blacklist_hod(hod_id):
 def principal_staff():
     if session.get("role") != "principal":
         return redirect("/login/principal")
+
     return render_template("principal_staff.html", staff=Staff.query.all())
 
 
@@ -297,7 +272,31 @@ def principal_add_staff():
     return render_template("principal_add_staff.html")
 
 
-# ---------- STAFF BLACKLIST ----------
+# ----------------------------------------------------
+# PRINCIPAL — BLACKLIST HOD
+# ----------------------------------------------------
+@app.route("/principal/hods/blacklist/<int:hod_id>")
+def principal_blacklist_hod(hod_id):
+    if session.get("role") != "principal":
+        return redirect("/login/principal")
+
+    hod = HOD.query.get_or_404(hod_id)
+
+    if Blocklist.query.filter_by(role="hod", ref_id=hod.id).first():
+        flash("HOD already blacklisted.", "warning")
+        return redirect("/principal/hods")
+
+    bl = Blocklist(role="hod", ref_id=hod.id, reason="Misconduct")
+    db.session.add(bl)
+    db.session.commit()
+
+    flash(f"HOD '{hod.name}' blacklisted!", "danger")
+    return redirect("/principal/hods")
+
+
+# ----------------------------------------------------
+# PRINCIPAL — BLACKLIST STAFF
+# ----------------------------------------------------
 @app.route("/principal/staff/blacklist/<int:staff_id>")
 def principal_blacklist_staff(staff_id):
     if session.get("role") != "principal":
@@ -305,16 +304,11 @@ def principal_blacklist_staff(staff_id):
 
     st = Staff.query.get_or_404(staff_id)
 
-    # If already blacklisted, just show message
     if Blocklist.query.filter_by(role="staff", ref_id=st.id).first():
-        flash("Staff member is already blacklisted.", "warning")
+        flash("Staff already blacklisted.", "warning")
         return redirect("/principal/staff")
 
-    bl = Blocklist(
-        role="staff",
-        ref_id=st.id,
-        reason="Misconduct"
-    )
+    bl = Blocklist(role="staff", ref_id=st.id, reason="Misconduct")
     db.session.add(bl)
     db.session.commit()
 
@@ -338,22 +332,17 @@ def principal_blacklist():
 
         if e.role == "hod":
             hod = HOD.query.get(e.ref_id)
-            if hod:
-                name = hod.name
-            else:
-                name = f"HOD (ID {e.ref_id})"
+            name = hod.name if hod else f"HOD (ID {e.ref_id})"
+
         elif e.role == "staff":
             st = Staff.query.get(e.ref_id)
-            if st:
-                name = st.name
-            else:
-                name = f"Staff (ID {e.ref_id})"
+            name = st.name if st else f"Staff (ID {e.ref_id})"
 
         view_rows.append({
             "id": e.id,
             "name": name,
             "role": e.role,
-            "reason": getattr(e, "reason", None)
+            "reason": e.reason
         })
 
     return render_template("principal_blacklist.html", bl=view_rows)
@@ -474,6 +463,93 @@ def review_meeting(id):
         return redirect("/dashboard/hod")
 
     return render_template("hod_add_review.html", meeting=m)
+
+
+# ----------------------------------------------------
+# PRINCIPAL — SELECTIVE & BULK MEETING SCHEDULER (ONLY COPY LEFT)
+# ----------------------------------------------------
+@app.route("/principal/meeting/bulk", methods=["GET", "POST"])
+def principal_bulk_meeting_fixed():
+    if session.get("role") != "principal":
+        return redirect("/login/principal")
+
+    all_staff = Staff.query.all()
+    all_hods = HOD.query.all()
+
+    if request.method == "POST":
+        mode = request.form.get("mode")
+        date_str = request.form.get("date")
+        time_str = request.form.get("time")
+        agenda = request.form.get("agenda")
+
+        if not date_str or not time_str:
+            flash("Please select date and time.", "danger")
+            return redirect("/principal/meeting/bulk")
+
+        date_val = datetime.strptime(date_str, "%Y-%m-%d").date()
+        time_val = datetime.strptime(time_str, "%H:%M").time()
+
+        selected_staff = []
+        selected_hods = []
+
+        if mode == "all_staff":
+            selected_staff = all_staff
+
+        elif mode == "all_hod":
+            selected_hods = all_hods
+
+        elif mode == "all_both":
+            selected_staff = all_staff
+            selected_hods = all_hods
+
+        elif mode == "selected":
+            staff_ids = request.form.getlist("staff_ids")
+            hod_ids = request.form.getlist("hod_ids")
+
+            if staff_ids:
+                selected_staff = Staff.query.filter(Staff.id.in_(staff_ids)).all()
+            if hod_ids:
+                selected_hods = HOD.query.filter(HOD.id.in_(hod_ids)).all()
+
+        created = 0
+
+        for st in selected_staff:
+            m = Meeting(
+                staff_id=st.id,
+                hod_id=None,
+                date=date_val,
+                time=time_val,
+                agenda=agenda,
+                status="Scheduled"
+            )
+            db.session.add(m)
+            created += 1
+
+        for hd in selected_hods:
+            m = Meeting(
+                staff_id=None,
+                hod_id=hd.id,
+                date=date_val,
+                time=time_val,
+                agenda=agenda,
+                status="Scheduled"
+            )
+            db.session.add(m)
+            created += 1
+
+        if created == 0:
+            flash("No users selected.", "warning")
+        else:
+            db.session.commit()
+            flash(f"Meetings scheduled for {created} users!", "success")
+
+        return redirect("/dashboard/principal")
+
+    return render_template(
+        "principal_bulk_meeting.html",
+        staff_list=all_staff,
+        hod_list=all_hods
+    )
 
 
 # ----------------------------------------------------
